@@ -1,41 +1,24 @@
-package application.data.model;
+package application.model.dto;
 
+import application.extension.CustomDateDeserializer;
+import application.extension.CustomDateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-@Entity(name = "dbo_product")
-public class Product {
+public class ProductDTO {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "product_id")
-    @Id
     private int id;
-
-    @Column(name = "category_id", insertable = false, updatable = false)
+//    @JsonProperty("categoryId")
     private int categoryId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private List<ProductImage> productImageList = new ArrayList<>();
-
-
     private String name;
-
-    @Column(name = "short_desc")
     private String shortDesc;
-
-    @Column(name = "main_image")
     private String mainImage;
-
     private Double price;
 
-    @Column(name = "created_date")
+    @JsonSerialize(using = CustomDateSerializer.class)
+    @JsonDeserialize(using = CustomDateDeserializer.class)
     private Date createdDate;
 
     public int getId() {
@@ -52,14 +35,6 @@ public class Product {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
     }
 
     public String getName() {
@@ -84,14 +59,6 @@ public class Product {
 
     public void setMainImage(String mainImage) {
         this.mainImage = mainImage;
-    }
-
-    public List<ProductImage> getProductImageList() {
-        return productImageList;
-    }
-
-    public void setProductImageList(List<ProductImage> productImageList) {
-        this.productImageList = productImageList;
     }
 
     public Double getPrice() {
