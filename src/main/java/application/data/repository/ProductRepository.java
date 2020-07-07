@@ -13,4 +13,11 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     @Query("select count(p.id) from dbo_product p")
     long getTotalProducts();
 
+    @Query("SELECT p FROM dbo_product p " +
+            "WHERE (:categoryId IS NULL OR (p.categoryId = :categoryId))" +
+            "AND (:productName IS NULL OR UPPER(p.name) LIKE CONCAT('%',UPPER(:productName),'%'))")
+    Page<Product> getListProductByCategoryOrProductNameContaining(Pageable pageable,
+                                                                  @Param("categoryId") Integer categoryId,
+                                                                  @Param("productName") String productName);
+
 }

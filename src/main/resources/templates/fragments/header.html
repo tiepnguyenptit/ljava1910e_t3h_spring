@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div th:fragment="header_info (vm)">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#" th:text="${vm.getCompanyName()}"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <th:block  th:each="item : ${vm.getHeaderMenuVMList()}">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="${item.getLink()}" th:text="${item.getName()}"></a>
+                        </li>
+                    </th:block>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" th:action="@{/}" th:object="${productname}" method="get">
+<!--                    <div sec:authorize="isAuthenticated()">-->
+<!--                        <div class="dropdown">-->
+<!--                            <button th:inline="text" style="margin-right: 10px" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                                [[${#httpServletRequest.remoteUser}]]-->
+<!--                            </button>-->
+<!--                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--                                <a class="dropdown-item" th:href="@{/user/detail}">User Detail</a>-->
+<!--                                <a class="dropdown-item" th:href="@{/order/history}">Order History</a>-->
+<!--                                <div class="dropdown-divider"></div>-->
+<!--                                <a class="dropdown-item" th:href="@{/logout}">Logout</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div sec:authorize="isAnonymous()">-->
+                        <div class="dropdown">
+                            <button th:inline="text" style="margin-right: 10px" class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Login
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/order/history}">Order History</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/login}">Login</a>
+                            </div>
+                        </div>
+<!--                    </div>-->
+                    <input class="form-control mr-sm-2" th:field="*{name}" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+</body>
+</html>
