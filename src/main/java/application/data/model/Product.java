@@ -15,7 +15,7 @@ public class Product {
     private int id;
 
     @Column(name = "category_id", insertable = false, updatable = false)
-    private int categoryId;
+    private Integer categoryId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -50,7 +50,7 @@ public class Product {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 
