@@ -21,20 +21,20 @@
                     </th:block>
                 </ul>
                 <form class="form-inline my-2 my-lg-0" th:action="@{/}" th:object="${productname}" method="get">
-<!--                    <div sec:authorize="isAuthenticated()">-->
-<!--                        <div class="dropdown">-->
-<!--                            <button th:inline="text" style="margin-right: 10px" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--                                [[${#httpServletRequest.remoteUser}]]-->
-<!--                            </button>-->
-<!--                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--                                <a class="dropdown-item" th:href="@{/user/detail}">User Detail</a>-->
-<!--                                <a class="dropdown-item" th:href="@{/order/history}">Order History</a>-->
-<!--                                <div class="dropdown-divider"></div>-->
-<!--                                <a class="dropdown-item" th:href="@{/logout}">Logout</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div sec:authorize="isAnonymous()">-->
+                    <div sec:authorize="isAuthenticated()">
+                        <div class="dropdown">
+                            <button th:inline="text" style="margin-right: 10px" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                [[${#httpServletRequest.remoteUser}]]
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" th:href="@{/user/detail}">User Detail</a>
+                                <a class="dropdown-item" th:href="@{/order/history}">Order History</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" th:href="@{/logout}">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
                         <div class="dropdown">
                             <button th:inline="text" style="margin-right: 10px" class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Login
@@ -45,7 +45,7 @@
                                 <a class="dropdown-item" th:href="@{/login}">Login</a>
                             </div>
                         </div>
-<!--                    </div>-->
+                    </div>
                     <input class="form-control mr-sm-2" th:field="*{name}" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>

@@ -2,6 +2,8 @@ package application.config;
 
 
 import org.apache.coyote.http11.AbstractHttp11Protocol;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,8 @@ import org.springframework.boot.context.embedded.tomcat.TomcatConnectorCustomize
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
@@ -20,6 +24,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+
+    private static final Logger logger = LogManager.getLogger(WebConfig.class);
 
 
     @SuppressWarnings("SpringJavaAutowiringInspection")
@@ -38,6 +44,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         resolver.setTemplateMode(properties.getMode());
         resolver.setCacheable(properties.isCache());
         return resolver;
+    }
+
+    @Bean(name = "passwordEncoder")
+    public PasswordEncoder getPasswordEncoder() {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
 
 
