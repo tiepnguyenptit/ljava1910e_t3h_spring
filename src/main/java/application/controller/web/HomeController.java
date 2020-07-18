@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +42,13 @@ public class HomeController extends BaseController {
                        @RequestParam(name = "categoryId", required = false) Integer categoryId,
                        @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                        @RequestParam(name = "size", required = false, defaultValue = "12") Integer size,
-                       @RequestParam(name = "sortByPrice", required = false) String sort) {
+                       @RequestParam(name = "sortByPrice", required = false) String sort,
+                       HttpServletResponse response,
+                       HttpServletRequest request,
+                       final Principal principal) {
 
 
-
+        this.checkCookie(response, request, principal);
 
         HomeLandingVM vm = new HomeLandingVM();
 
