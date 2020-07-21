@@ -37,7 +37,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         logger.info("-----configure(HttpSecurity http)");
 
         http.authorizeRequests()
-                .antMatchers("/", "/product/**", "/login", "/register", "/register-user").permitAll()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("USER")
                 .anyRequest().authenticated()

@@ -43,12 +43,9 @@ $(document).ready(function() {
         dataCart.productId = pdInfo;
         dataCart.guid = getCookie("guid");
 
-        NProgress.start();
-
         var linkPost = "/api/cart-product/add";
 
         axios.post(linkPost, dataCart).then(function(res){
-            NProgress.done();
             if(res.data.success) {
                 swal(
                     'Success',
@@ -65,7 +62,6 @@ $(document).ready(function() {
                 );
             }
         }, function(err){
-            NProgress.done();
             swal(
                 'Error',
                 'Fail',

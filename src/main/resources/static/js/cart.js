@@ -5,9 +5,6 @@ $(document).ready(function() {
         dataCartProduct.id = $(this).data("id");
         dataCartProduct.amount = $(this).val();
 
-
-        NProgress.start();
-
         var linkPost = "/api/cart-product/update";
 
         axios.post(linkPost, dataCartProduct).then(function(res){
