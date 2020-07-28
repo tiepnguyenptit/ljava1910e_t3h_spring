@@ -13,24 +13,17 @@ $(document).ready(function() {
 
     $("#input-avatar").change(function(e) {
         readURL(this);
-    });
-
-
-    $("#myForm").submit(function (e) {
-        e.preventDefault();
         var formData = new FormData();
-        NProgress.start();
         formData.append('file', $("#input-avatar")[0].files[0]);
         axios.post("/api/upload/upload-image", formData).then(function(res){
             NProgress.done();
             if(res.data.success) {
                 $("#avatar").val(res.data.link);
             }
-            $("#myForm")[0].submit();
         }, function(err){
-            NProgress.done();
-            $("#myForm")[0].submit();
+
         });
     });
+
 
 });
