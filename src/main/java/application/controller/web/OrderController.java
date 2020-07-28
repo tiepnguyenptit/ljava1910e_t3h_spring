@@ -135,5 +135,107 @@ public class OrderController extends BaseController {
         return "redirect:/order/history";
     }
 
+    @GetMapping("/history")
+    public String orderHistory(Model model,
+                               @Valid @ModelAttribute("productname") ProductVM productName,
+                               HttpServletRequest request,
+                               final Principal principal) {
+
+        OrderHistoryVM vm = new OrderHistoryVM();
+
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+        List<OrderVM> orderVMS = new ArrayList<>();
+
+        Cookie[] cookie = request.getCookies();
+
+        String guid = null;
+        boolean flag = false;
+
+        List<Order> orderEntityList = null;
+
+        if(principal != null) {
+            String  username = SecurityContextHolder.getContext().getAuthentication().getName();
+            orderEntityList = orderService.findOrderByGuidOrUserName(null,username);
+        } else {
+            if(cookie != null) {
+                for(Cookie c : cookie) {
+                    if(c.getName().equals("guid")) {
+                        flag = true;
+                        guid = c.getValue();
+                    }
+                }
+                if(flag == true) {
+                    orderEntityList = orderService.findOrderByGuidOrUserName(guid,null);
+                }
+            }
+        }
+
+        if(orderEntityList != null) {
+            for(Order order : orderEntityList) {
+                OrderVM orderVM = new OrderVM();
+                orderVM.setId(order.getId());
+                orderVM.setCustomerName(order.getCustomerName());
+                orderVM.setEmail(order.getEmail());
+                orderVM.setAddress(order.getAddress());
+                orderVM.setPhoneNumber(order.getPhoneNumber());
+                orderVM.setPrice(df.format(order.getPrice()));
+                orderVM.setCreatedDate(order.getCreatedDate());
+
+                orderVMS.add(orderVM);
+            }
+        }
+
+        vm.setLayoutHeaderVM(this.getLayoutHeaderVM());
+        vm.setOrderVMS(orderVMS);
+
+        model.addAttribute("vm",vm);
+
+        return "/order-history";
+    }
+
+
+    @GetMapping("/history/{orderId}")
+    public String getOrderDetail(Model model,
+                                 @Valid @ModelAttribute("productname") ProductVM productName,
+                                 @PathVariable("orderId") int orderId) {
+
+        OrderDetailVM vm = new OrderDetailVM();
+
+        DecimalFormat df = new DecimalFormat("####0.00");
+
+        double totalPrice = 0;
+
+        List<OrderProductVM> orderProductVMS = new ArrayList<>();
+
+        Order orderEntity = orderService.findOne(orderId);
+
+        if(orderEntity != null) {
+            for(OrderProduct orderProduct : orderEntity.getListProductOrders()) {
+                OrderProductVM orderProductVM = new OrderProductVM();
+
+                orderProductVM.setProductId(orderProduct.getProduct().getId());
+                orderProductVM.setMainImage(orderProduct.getProduct().getMainImage());
+                orderProductVM.setAmount(orderProduct.getAmount());
+                orderProductVM.setName(orderProduct.getProduct().getName());
+
+                orderProductVM.setPrice(df.format(orderProduct.getPrice()));
+
+                totalPrice += orderProduct.getPrice();
+
+                orderProductVMS.add(orderProductVM);
+            }
+        }
+
+        vm.setLayoutHeaderVM(this.getLayoutHeaderVM());
+        vm.setOrderProductVMS(orderProductVMS);
+        vm.setTotalPrice(df.format(totalPrice));
+        vm.setTotalProduct(orderProductVMS.size());
+
+        model.addAttribute("vm",vm);
+
+        return "/order-detail";
+    }
+
 
 }
