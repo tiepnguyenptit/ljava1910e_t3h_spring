@@ -3,14 +3,19 @@ package application.model.viewmodel.common;
 public class ChartDataVM {
 
     private String label;
-    private Long value;
+    private String value;
 
     public ChartDataVM() {
     }
 
     public ChartDataVM(String label, Long value) {
         this.label = label;
-        this.value = value;
+        this.value = value.toString();
+    }
+
+    public ChartDataVM(Integer label, Double value) {
+        this.label = "Tháng " + label.toString();
+        this.value = value.toString();
     }
 
     public String getLabel() {
@@ -20,12 +25,12 @@ public class ChartDataVM {
     public void setLabel(String label) {
         this.label = label;
     }
-
-    public Long getValue() {
+    
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

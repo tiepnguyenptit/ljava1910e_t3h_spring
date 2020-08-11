@@ -2,11 +2,13 @@ package application.controller.api;
 
 import application.data.model.Category;
 import application.data.model.Product;
+import application.data.repository.ProductRepository;
 import application.data.service.CategoryService;
 import application.data.service.ProductService;
 import application.model.api.BaseApiResult;
 import application.model.api.DataApiResult;
 import application.model.dto.ProductDTO;
+import application.model.viewmodel.common.ProductVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,9 @@ public class ProductApiController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     private String[] images = {
             "https://salt.tikicdn.com/cache/550x550/ts/product/0a/fb/75/740106b009f436911a8ea4efdf7edadf.jpg",
@@ -155,4 +160,54 @@ public class ProductApiController {
         return result;
     }
 
+
+    @GetMapping("/query/method-name")
+    public DataApiResult testQueryNameMethod(@RequestParam(name = "name", defaultValue = "", required = false) String name){
+        DataApiResult result= new DataApiResult();
+
+        List<Product> productList = productRepository.findByNameContainingIgnoreCase(name);
+        List<ProductDTO> productDTOS = new ArrayList<>();
+
+        for (Product productEntity : productList){
+            ProductDTO dto = new ProductDTO();
+            dto.setId(productEntity.getId());
+            if(productEntity.getCategory() != null) {
+                dto.setCategoryId(productEntity.getCategory().getId());
+            }
+            dto.setMainImage(productEntity.getMainImage());
+            dto.setName(productEntity.getName());
+            dto.setPrice(productEntity.getPrice());
+            dto.setShortDesc(productEntity.getShortDesc());
+            dto.setCreatedDate(productEntity.getCreatedDate());
+
+            productDTOS.add(dto);
+        }
+
+        result.setMessage("success");
+        result.setData(productDTOS);
+        result.setSuccess(true);
+        return result;
+    }
+
+    @GetMapping("/query/jpql")
+    public DataApiResult testQueryJPQL(@RequestParam(name = "name", defaultValue = "", required = false) String name){
+        DataApiResult result= new DataApiResult();
+        List<ProductDTO> productDTOS = productRepository.getListByNameContaining(name);
+
+        result.setMessage("success");
+        result.setData(productDTOS);
+        result.setSuccess(true);
+        return result;
+    }
+
+    @GetMapping("/query/native")
+    public DataApiResult testQueryNative(@RequestParam(name = "name", defaultValue = "", required = false) String name){
+        DataApiResult result= new DataApiResult();
+        List<Object[]> data = productRepository.getListByNameContainingNative(name);
+
+        result.setMessage("success");
+        result.setData(data);
+        result.setSuccess(true);
+        return result;
+    }
 }

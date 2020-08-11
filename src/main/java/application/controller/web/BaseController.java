@@ -2,9 +2,11 @@ package application.controller.web;
 
 import application.constant.CompanyConstant;
 import application.data.model.Cart;
+import application.data.model.User;
 import application.data.service.CartService;
 import application.data.service.UserService;
 import application.model.viewmodel.common.HeaderMenuVM;
+import application.model.viewmodel.common.LayoutHeaderAdminVM;
 import application.model.viewmodel.common.LayoutHeaderVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -100,6 +102,24 @@ public class BaseController {
             }
 
         }
+    }
+
+    public LayoutHeaderAdminVM getLayoutHeaderAdminVM() {
+
+        LayoutHeaderAdminVM vm = new LayoutHeaderAdminVM();
+
+        String  username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User userEntity = userService.findUserByUsername(username);
+
+        if(userEntity!=null) {
+            vm.setUserName(username);
+            if(userEntity.getAvatar() != null) {
+                vm.setAvatar(userEntity.getAvatar());
+            } else vm.setAvatar("https://iptc.org/wp-content/uploads/2018/05/avatar-anonymous-300x300.png");
+        }
+
+        return vm;
+
     }
 
 

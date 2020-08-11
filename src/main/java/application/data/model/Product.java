@@ -25,6 +25,9 @@ public class Product {
     private List<ProductImage> productImageList = new ArrayList<>();
 
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<OrderProduct> orderProductList = new ArrayList<>();
+
     private String name;
 
     @Column(name = "short_desc")
@@ -108,5 +111,13 @@ public class Product {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public List<OrderProduct> getOrderProductList() {
+        return orderProductList;
+    }
+
+    public void setOrderProductList(List<OrderProduct> orderProductList) {
+        this.orderProductList = orderProductList;
     }
 }

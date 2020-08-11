@@ -18,7 +18,7 @@ $(document).ready(function() {
             if(res.data.success) {
                 dataCategory.id = res.data.data.id;
                 $("#input-category-name").val(res.data.data.name);
-                $("#input-category-desc").val(res.data.data.shortDesc);
+                $("#input-category-desc").val(res.data.data.short_desc);
             }else {
                 console.log("ahihi");
             }
@@ -41,7 +41,7 @@ $(document).ready(function() {
 
 
         dataCategory.name = $('#input-category-name').val();
-        dataCategory.shortDesc = $('#input-category-desc').val();
+        dataCategory.short_desc = $('#input-category-desc').val();
 
         NProgress.start();
         var linkPost = "/api/category/create";

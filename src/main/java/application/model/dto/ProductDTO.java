@@ -12,6 +12,7 @@ public class ProductDTO {
     private int id;
 //    @JsonProperty("categoryId")
     private int categoryId;
+    private String categoryName;
     private String name;
     private String shortDesc;
     private String mainImage;
@@ -20,6 +21,29 @@ public class ProductDTO {
     @JsonSerialize(using = CustomDateSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private Date createdDate;
+
+
+    public ProductDTO() {
+    }
+
+    public ProductDTO(String name, String shortDesc) {
+        this.name = name;
+        this.shortDesc = shortDesc;
+    }
+
+    public ProductDTO(String name, String shortDesc, String categoryName) {
+        this.categoryName = categoryName;
+        this.name = name;
+        this.shortDesc = shortDesc;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public int getId() {
         return id;
